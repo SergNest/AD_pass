@@ -17,25 +17,39 @@
                 location.reload();
             }
         }
+
+        async function toggleStatus(samAccountName, action) {
+        const response = await fetch('/toggle_status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sam_account_name: samAccountName, action: action })
+        });
+        const result = await response.json();
+        alert(result.message);
+        if (result.success) {
+            location.reload();
+        }
+    }
     </script>
 
+
     <style>
-    .disabled-user {
-        background-color: #ffcccc; /* Світло-червоний для відключених */
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
+        .disabled-user {
+            background-color: #ffcccc; /* Світло-червоний для відключених */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
 <h1>Список користувачів Active Directory</h1>
@@ -56,6 +70,11 @@
         <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
         <td>
             <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
+        </td>
+        <td>
+            <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
+                {{ "Відключити" if not user.disabled else "Активувати" }}
+            </button>
         </td>
     </tr>
     {% endfor %}

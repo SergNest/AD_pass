@@ -112,6 +112,36 @@ def reset_password():
         return jsonify({"success": False, "message": f"Помилка: {str(e)}"}), 500
 
 
+
+@app.route('/toggle_status', methods=['POST'])
+def toggle_status():
+    sam_account_name = request.json.get('sam_account_name')
+    action = request.json.get('action')  # "enable" або "disable"
+
+    if not sam_account_name or action not in ["enable", "disable"]:
+        return jsonify({"success": False, "message": "Invalid parameters. Provide sam_account_name and action (enable/disable)."}), 400
+
+    try:
+        result = subprocess.run(
+            [
+                "powershell", "-File", "toggle_account_status.ps1",
+                "-SamAccountName", sam_account_name,
+                "-Action", action
+            ],
+            text=True,
+            capture_output=True,
+            encoding='utf-8'
+        )
+
+        if result.returncode == 0:
+            return jsonify({"success": True, "message": result.stdout.strip()})
+        else:
+            return jsonify({"success": False, "message": result.stderr.strip()}), 500
+
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Error: {str(e)}"}), 500
+
+
 # Запуск Flask-додатку
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
