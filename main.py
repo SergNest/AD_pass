@@ -12,7 +12,7 @@ BASE_DN = "DC=center,DC=com"  # Базовий DN для пошуку корис
 USER = os.getenv("USER")
 PASSWORD = os.getenv("PASS")
 
-
+SERVER = Server(SERVER_ADDRESS, get_info=ALL)
 
 def get_users():
     try:
@@ -42,8 +42,8 @@ def get_users_from_multiple_containers():
         "OU=buro,DC=center,DC=com"
     ]
     try:
-        server = Server(SERVER_ADDRESS, get_info=ALL)
-        conn = Connection(server, authentication=NTLM, auto_bind=True, user=USER, password=PASSWORD)
+
+        conn = Connection(SERVER, authentication=NTLM, auto_bind=True, user=USER, password=PASSWORD)
 
         users = []
         for container_dn in container:
@@ -90,8 +90,30 @@ def reset_password():
 
     user_dn = f"CN={user_cn},{BASE_DN}"
     new_password = "qwerty+1"
-    result = change_user_password(user_dn, new_password)
-    return jsonify(result)
+
+    try:
+
+        conn = Connection(
+            SERVER,
+            user=USER,  # У форматі "domain\username"
+            password=PASSWORD,
+            authentication=NTLM,
+            auto_bind=True
+        )
+
+        # Зміна пароля
+        conn.modify(
+            dn=user_dn,
+            changes={'unicodePwd': [(MODIFY_REPLACE, [f'"{new_password}"'.encode('utf-16-le')])]}
+        )
+
+        if conn.result['result'] == 0:
+            return jsonify({"success": True, "message": f"Пароль для {user_cn} змінено на {new_password}."})
+        else:
+            return jsonify({"success": False, "message": f"Не вдалося змінити пароль: {conn.result['message']}"}), 400
+
+    except Exception as e:
+        return jsonify({"success": False, "message": f"Помилка: {str(e)}"}), 500
 
 
 # Запуск Flask-додатку
