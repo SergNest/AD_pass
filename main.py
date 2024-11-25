@@ -32,7 +32,7 @@ def get_users():
 
 def get_users_from_multiple_containers():
     container = [
-        "OU=BURO,DC=center,DC=com"
+        "OU=buro,DC=center,DC=com"
     ]
     try:
         server = Server(SERVER_ADDRESS, get_info=ALL)
