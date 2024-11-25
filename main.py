@@ -36,8 +36,8 @@ def get_users():
 
 
 def get_users_from_multiple_containers():
-    print(user)
-    print(password)
+    print(USER)
+    print(PASSWORD)
     container = [
         "OU=buro,DC=center,DC=com"
     ]
