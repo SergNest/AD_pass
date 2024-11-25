@@ -6,7 +6,7 @@ param (
 
 # Перевіряємо, чи вказаний SamAccountName
 if (-not $SamAccountName) {
-    Write-Output "Error: Не вказано SamAccountName"
+    Write-Output "Error: Not enter SamAccountName"
     exit 1
 }
 
@@ -18,7 +18,7 @@ try {
     $User = Get-ADUser -Filter "SamAccountName -eq '$SamAccountName'" -Properties DistinguishedName
 
     if (-not $User) {
-        Write-Output "Error: Користувач не знайдений"
+        Write-Output "Error: User not found"
         exit 1
     }
 
@@ -28,7 +28,7 @@ try {
     # Встановлення прапора "Користувач повинен змінити пароль при наступному вході"
     Set-ADUser -Identity $User.DistinguishedName -ChangePasswordAtLogon $true
 
-    Write-Output "Success: Пароль для $SamAccountName змінено на $NewPassword. Користувач буде змушений змінити пароль при наступному вході."
+    Write-Output "Success: Password for $SamAccountName changed on $NewPassword. The user will be required to change their password at the next logon."
     exit 0
 
 } catch {
