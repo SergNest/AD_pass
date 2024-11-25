@@ -1,4 +1,3 @@
-
 param (
     [string]$SamAccountName,
     [string]$NewPassword
@@ -24,7 +23,11 @@ try {
 
     # Зміна пароля
     Set-ADAccountPassword -Identity $User.DistinguishedName -Reset -NewPassword (ConvertTo-SecureString $NewPassword -AsPlainText -Force)
-    Write-Output "Success: Пароль для $SamAccountName змінено на $NewPassword"
+
+    # Встановлення прапора "Користувач повинен змінити пароль при наступному вході"
+    Set-ADUser -Identity $User.DistinguishedName -ChangePasswordAtLogon $true
+
+    Write-Output "Success: Пароль для $SamAccountName змінено на $NewPassword. Користувач буде змушений змінити пароль при наступному вході."
     exit 0
 
 } catch {
