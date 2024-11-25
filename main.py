@@ -4,12 +4,11 @@ from ldap3 import Server, Connection, NTLM, ALL, MODIFY_REPLACE, SUBTREE
 app = Flask(__name__)
 
 
-SERVER_ADDRESS = "localhost"  # Локальний сервер AD
+SERVER_ADDRESS = "192.168.137.99"  # Локальний сервер AD
 DOMAIN_NAME = "center.com"    # Ваш домен
 BASE_DN = "DC=center,DC=com"  # Базовий DN для пошуку користувачів
 
 
-# Отримання списку користувачів із AD
 def get_users():
     try:
         server = Server(SERVER_ADDRESS, get_info=ALL)
