@@ -12,6 +12,9 @@ BASE_DN = "DC=center,DC=com"  # Базовий DN для пошуку корис
 user = os.getenv("USER")
 password = os.getenv("PASS")
 
+print(user)
+print(password)
+
 def get_users():
     try:
         server = Server(SERVER_ADDRESS, get_info=ALL)
