@@ -9,11 +9,10 @@ load_dotenv()
 SERVER_ADDRESS = "127.0.0.1"  # Локальний сервер AD
 DOMAIN_NAME = "center.com"    # Ваш домен
 BASE_DN = "DC=center,DC=com"  # Базовий DN для пошуку користувачів
-user = os.getenv("USER")
-password = os.getenv("PASS")
+USER = os.getenv("USER")
+PASSWORD = os.getenv("PASS")
 
-print(user)
-print(password)
+
 
 def get_users():
     try:
@@ -37,12 +36,14 @@ def get_users():
 
 
 def get_users_from_multiple_containers():
+    print(user)
+    print(password)
     container = [
         "OU=buro,DC=center,DC=com"
     ]
     try:
         server = Server(SERVER_ADDRESS, get_info=ALL)
-        conn = Connection(server, authentication=NTLM, auto_bind=True, user=user, password=password)
+        conn = Connection(server, authentication=NTLM, auto_bind=True, user=USER, password=PASSWORD)
 
         users = []
         for container_dn in container:
