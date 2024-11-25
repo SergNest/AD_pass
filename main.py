@@ -39,7 +39,7 @@ def get_users_from_multiple_containers():
     ]
     try:
         server = Server(SERVER_ADDRESS, get_info=ALL)
-        conn = Connection(server, authentication=NTLM, auto_bind=True)
+        conn = Connection(server, authentication=NTLM, auto_bind=True, user=user, password=password)
 
         users = []
         for container_dn in container:
