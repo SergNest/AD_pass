@@ -36,8 +36,7 @@ def get_users():
 
 
 def get_users_from_multiple_containers():
-    print(USER)
-    print(PASSWORD)
+
     container = [
         "OU=buro,DC=center,DC=com"
     ]
@@ -84,37 +83,45 @@ def index():
 
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
-    user_cn = request.json.get('user_cn')
-    if not user_cn:
-        return jsonify({"success": False, "message": "CN користувача не вказано."}), 400
+    sam_account_name = request.json.get('user_cn')
+    if not sam_account_name:
+        return jsonify({"success": False, "message": "Ім'я облікового запису (sam_account_name) не вказано."}), 400
 
-    user_dn = f"CN={user_cn},{BASE_DN}"
-    new_password = "qwerty+1"
-
+    # Пошук DN користувача за `sam_account_name`
     try:
-
         conn = Connection(
             SERVER,
-            user=USER,  # У форматі "domain\username"
+            user=USER,  # У форматі "domain\\username"
             password=PASSWORD,
             authentication=NTLM,
             auto_bind=True
         )
 
+        conn.search(
+            search_base=BASE_DN,
+            search_filter=f"(sAMAccountName={sam_account_name})",
+            attributes=['distinguishedName']
+        )
+
+        if len(conn.entries) == 0:
+            return jsonify({"success": False, "message": f"Користувача з ім'ям {sam_account_name} не знайдено."}), 404
+
+        user_dn = conn.entries[0]['distinguishedName'].value
+
         # Зміна пароля
+        new_password = "qwerty+1"
         conn.modify(
             dn=user_dn,
             changes={'unicodePwd': [(MODIFY_REPLACE, [f'"{new_password}"'.encode('utf-16-le')])]}
         )
 
         if conn.result['result'] == 0:
-            return jsonify({"success": True, "message": f"Пароль для {user_cn} змінено на {new_password}."})
+            return jsonify({"success": True, "message": f"Пароль для {sam_account_name} змінено на {new_password}."})
         else:
             return jsonify({"success": False, "message": f"Не вдалося змінити пароль: {conn.result['message']}"}), 400
 
     except Exception as e:
         return jsonify({"success": False, "message": f"Помилка: {str(e)}"}), 500
-
 
 # Запуск Flask-додатку
 if __name__ == '__main__':
