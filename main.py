@@ -83,7 +83,7 @@ def index():
 
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
-    sam_account_name = request.json.get('sam_account_name')
+    sam_account_name = request.json.get('user_cn')
     if not sam_account_name:
         return jsonify({"success": False, "message": "Ім'я облікового запису (sam_account_name) не вказано."}), 400
 
