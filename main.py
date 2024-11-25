@@ -54,8 +54,9 @@ def get_users_from_multiple_containers():
             for entry in conn.entries:
                 cn = entry['cn']
                 user_account_control = entry['userAccountControl'].value
+                sam_account_name = entry['sAMAccountName'].value if 'sAMAccountName' in entry else 'N/A'
                 is_disabled = int(user_account_control) & 2 != 0
-                users.append({'cn': cn, 'disabled': is_disabled})
+                users.append({'cn': cn, 'disabled': is_disabled, 'sam_account_name': sam_account_name})
         return users
     except Exception as e:
         print(f"Помилка отримання користувачів: {str(e)}")

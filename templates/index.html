@@ -18,28 +18,48 @@
             }
         }
     </script>
+
+    <style>
+    .disabled-user {
+        background-color: #ffcccc; /* Світло-червоний для відключених */
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
 </head>
 <body>
-    <h1>Список користувачів Active Directory</h1>
-    <table border="1" cellpadding="5">
-        <thead>
-            <tr>
-                <th>Ім'я</th>
-                <th>Статус</th>
-                <th>Дія</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.cn }}</td>
-                <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
-                <td>
-                    <button onclick="resetPassword('{{ user.cn }}')">Скинути пароль</button>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h1>Список користувачів Active Directory</h1>
+<table border="1" cellpadding="5">
+    <thead>
+    <tr>
+        <th>Ім'я</th>
+        <th>Ім'я облікового запису</th>
+        <th>Статус</th>
+        <th>Дія</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    <tr class="{{ 'disabled-user' if user.disabled else '' }}"> <!-- Додано клас -->
+        <td>{{ user.cn }}</td>
+        <td>{{ user.sam_account_name }}</td>
+        <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
+        <td>
+            <button onclick="resetPassword('{{ user.cn }}')">Скинути пароль</button>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
 </body>
 </html>
