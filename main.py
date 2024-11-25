@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 load_dotenv()
-SERVER_ADDRESS = "192.168.137.99"  # Локальний сервер AD
+SERVER_ADDRESS = "127.0.0.1"  # Локальний сервер AD
 DOMAIN_NAME = "center.com"    # Ваш домен
 BASE_DN = "DC=center,DC=com"  # Базовий DN для пошуку користувачів
 user = os.getenv("USER")
