@@ -53,7 +53,7 @@ def get_users_from_multiple_containers():
                         attributes=['cn', 'userAccountControl'])
             for entry in conn.entries:
                 cn = entry['cn']
-                user_account_control = entry['userAccountControl']
+                user_account_control = entry['userAccountControl'].value
                 is_disabled = int(user_account_control) & 2 != 0
                 users.append({'cn': cn, 'disabled': is_disabled})
         return users
