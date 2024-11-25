@@ -1,8 +1,9 @@
+import os
+import subprocess
+
 from flask import Flask, request, jsonify, render_template
 from ldap3 import Server, Connection, NTLM, ALL, MODIFY_REPLACE, SUBTREE
 from dotenv import load_dotenv
-import os
-
 app = Flask(__name__)
 
 load_dotenv()
@@ -83,44 +84,29 @@ def index():
 
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
-    sam_account_name = request.json.get('user_cn')
+    sam_account_name = request.json.get('sam_account_name')
     if not sam_account_name:
-        return jsonify({"success": False, "message": "Ім'я облікового запису (sam_account_name) не вказано."}), 400
+        return jsonify({"success": False, "message": "Не вказано SamAccountName"}), 400
+
+    new_password = "qwerty+1"
 
     try:
-        # server = Server(SERVER_ADDRESS, get_info=ALL, use_ssl=True)  # SSL-з'єднання
-        conn = Connection(
-            SERVER,
-            user=USER,  # У форматі "domain\\username"
-            password=PASSWORD,
-            authentication=NTLM,
-            auto_bind=True
+        # Викликаємо PowerShell-скрипт
+        result = subprocess.run(
+            [
+                "powershell", "-File", "reset_password.ps1",
+                "-SamAccountName", sam_account_name,
+                "-NewPassword", new_password
+            ],
+            text=True,
+            capture_output=True
         )
 
-        # Пошук DN користувача
-        conn.search(
-            search_base=BASE_DN,
-            search_filter=f"(sAMAccountName={sam_account_name})",
-            attributes=['distinguishedName']
-        )
-
-        if len(conn.entries) == 0:
-            return jsonify({"success": False, "message": f"Користувача з ім'ям {sam_account_name} не знайдено."}), 404
-
-        user_dn = conn.entries[0]['distinguishedName'].value
-
-        # Зміна пароля
-        new_password = '"qwerty+1"'  # Пароль у подвійних лапках
-        encoded_password = new_password.encode('utf-16-le')
-        conn.modify(
-            dn=user_dn,
-            changes={'unicodePwd': [(MODIFY_REPLACE, [encoded_password])]}
-        )
-
-        if conn.result['result'] == 0:
-            return jsonify({"success": True, "message": f"Пароль для {sam_account_name} змінено на qwerty+1."})
+        # Аналізуємо результат виконання
+        if result.returncode == 0:
+            return jsonify({"success": True, "message": result.stdout.strip()})
         else:
-            return jsonify({"success": False, "message": f"Не вдалося змінити пароль: {conn.result['message']}"}), 400
+            return jsonify({"success": False, "message": result.stderr.strip()}), 500
 
     except Exception as e:
         return jsonify({"success": False, "message": f"Помилка: {str(e)}"}), 500
