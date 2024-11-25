@@ -88,9 +88,9 @@ def reset_password():
         return jsonify({"success": False, "message": "Ім'я облікового запису (sam_account_name) не вказано."}), 400
 
     try:
-        server = Server(SERVER_ADDRESS, get_info=ALL, use_ssl=True)  # SSL-з'єднання
+        # server = Server(SERVER_ADDRESS, get_info=ALL, use_ssl=True)  # SSL-з'єднання
         conn = Connection(
-            server,
+            SERVER,
             user=USER,  # У форматі "domain\\username"
             password=PASSWORD,
             authentication=NTLM,
