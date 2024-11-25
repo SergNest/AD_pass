@@ -99,7 +99,8 @@ def reset_password():
                 "-NewPassword", new_password
             ],
             text=True,
-            capture_output=True
+            capture_output=True,
+            encoding='utf-8',
         )
 
         # Аналізуємо результат виконання
@@ -130,7 +131,8 @@ def toggle_status():
             ],
             text=True,
             capture_output=True,
-            encoding='utf-8'
+            encoding='utf-8',
+
         )
 
         if result.returncode == 0:
