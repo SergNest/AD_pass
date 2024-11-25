@@ -4,6 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Користувачі AD</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto; /* Center the table */
+            border: 1px solid #ccc; /* Add a border around the table */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .disabled-user {
+            background-color: #ffcccc; /* Light red for disabled users */
+        }
+        button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px; /* Add rounded corners */
+        }
+        button:hover {
+            background-color: #3e8e41; /* Darker green on hover */
+        }
+        button:disabled {
+            background-color: #ccc; /* Gray for disabled buttons */
+            cursor: default;
+        }
+
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px; /* Reduce font size on smaller screens */
+            }
+            th, td {
+                padding: 8px; /* Reduce padding on smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Список користувачів Active Directory</h1>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Ім'я облікового запису</th>
+                <th>Статус</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr class="{{ 'disabled-user' if user.disabled else '' }}">
+                    <td>{{ user.cn }}</td>
+                    <td>{{ user.sam_account_name }}</td>
+                    <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
+                    <td>
+                        <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
+                    </td>
+                    <td>
+                        <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
+                            {{ "Відключити" if not user.disabled else "Активувати" }}
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     <script>
         async function resetPassword(userCn) {
             const response = await fetch('/reset_password', {
@@ -17,9 +105,7 @@
                 location.reload();
             }
         }
-    </script>
 
-    <script>
         async function toggleStatus(samAccountName, action) {
             const response = await fetch('/toggle_status', {
                 method: 'POST',
@@ -33,52 +119,5 @@
             }
         }
     </script>
-    <style>
-        .disabled-user {
-            background-color: #ffcccc; /* Світло-червоний для відключених */
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-</head>
-<body>
-<h1>Список користувачів Active Directory</h1>
-<table border="1" cellpadding="5">
-    <thead>
-    <tr>
-        <th>Ім'я</th>
-        <th>Ім'я облікового запису</th>
-        <th>Статус</th>
-        <th>Дія</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for user in users %}
-    <tr class="{{ 'disabled-user' if user.disabled else '' }}"> <!-- Додано клас -->
-        <td>{{ user.cn }}</td>
-        <td>{{ user.sam_account_name }}</td>
-        <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
-        <td>
-            <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
-        </td>
-        <td>
-            <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
-                {{ "Відключити" if not user.disabled else "Активувати" }}
-            </button>
-        </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
 </body>
 </html>
