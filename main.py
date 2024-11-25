@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from ldap3 import Server, Connection, NTLM, ALL, MODIFY_REPLACE, SUBTREE
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 
@@ -7,12 +9,13 @@ app = Flask(__name__)
 SERVER_ADDRESS = "192.168.137.99"  # Локальний сервер AD
 DOMAIN_NAME = "center.com"    # Ваш домен
 BASE_DN = "DC=center,DC=com"  # Базовий DN для пошуку користувачів
-
+user = os.getenv("USER")
+password = os.getenv("PASS")
 
 def get_users():
     try:
         server = Server(SERVER_ADDRESS, get_info=ALL)
-        conn = Connection(server, authentication=NTLM, auto_bind=True)
+        conn = Connection(server, authentication=NTLM, auto_bind=True, user=user, password=password)
 
         conn.search(search_base=BASE_DN,
                     search_filter='(objectClass=user)',
