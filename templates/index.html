@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Користувачі AD</title>
+    <script>
+        async function resetPassword(userCn) {
+            const response = await fetch('/reset_password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_cn: userCn })
+            });
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) {
+                location.reload();
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Список користувачів Active Directory</h1>
+    <table border="1" cellpadding="5">
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Статус</th>
+                <th>Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.cn }}</td>
+                <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
+                <td>
+                    <button onclick="resetPassword('{{ user.cn }}')">Скинути пароль</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
