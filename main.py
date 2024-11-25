@@ -83,20 +83,21 @@ def index():
 
 @app.route('/reset_password', methods=['POST'])
 def reset_password():
-    sam_account_name = request.json.get('user_cn')
+    sam_account_name = request.json.get('sam_account_name')
     if not sam_account_name:
         return jsonify({"success": False, "message": "Ім'я облікового запису (sam_account_name) не вказано."}), 400
 
-    # Пошук DN користувача за `sam_account_name`
     try:
+        server = Server(SERVER_ADDRESS, get_info=ALL, use_ssl=True)  # SSL-з'єднання
         conn = Connection(
-            SERVER,
+            server,
             user=USER,  # У форматі "domain\\username"
             password=PASSWORD,
             authentication=NTLM,
             auto_bind=True
         )
 
+        # Пошук DN користувача
         conn.search(
             search_base=BASE_DN,
             search_filter=f"(sAMAccountName={sam_account_name})",
@@ -109,19 +110,21 @@ def reset_password():
         user_dn = conn.entries[0]['distinguishedName'].value
 
         # Зміна пароля
-        new_password = "qwerty+1"
+        new_password = '"qwerty+1"'  # Пароль у подвійних лапках
+        encoded_password = new_password.encode('utf-16-le')
         conn.modify(
             dn=user_dn,
-            changes={'unicodePwd': [(MODIFY_REPLACE, [f'"{new_password}"'.encode('utf-16-le')])]}
+            changes={'unicodePwd': [(MODIFY_REPLACE, [encoded_password])]}
         )
 
         if conn.result['result'] == 0:
-            return jsonify({"success": True, "message": f"Пароль для {sam_account_name} змінено на {new_password}."})
+            return jsonify({"success": True, "message": f"Пароль для {sam_account_name} змінено на qwerty+1."})
         else:
             return jsonify({"success": False, "message": f"Не вдалося змінити пароль: {conn.result['message']}"}), 400
 
     except Exception as e:
         return jsonify({"success": False, "message": f"Помилка: {str(e)}"}), 500
+
 
 # Запуск Flask-додатку
 if __name__ == '__main__':
