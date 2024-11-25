@@ -50,7 +50,7 @@ def get_users_from_multiple_containers():
             conn.search(search_base=container_dn,
                         search_filter='(objectClass=user)',
                         search_scope=SUBTREE,
-                        attributes=['cn', 'userAccountControl'])
+                        attributes=['cn', 'userAccountControl', 'sAMAccountName'])
             for entry in conn.entries:
                 cn = entry['cn']
                 user_account_control = entry['userAccountControl'].value
