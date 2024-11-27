@@ -172,5 +172,6 @@ poetry.toml
 skarb_venv/
 # LSP config files
 pyrightconfig.json
+venv_ad/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
