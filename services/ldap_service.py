@@ -1,5 +1,8 @@
 import os
 from ldap3 import Server, Connection, NTLM, ALL, SUBTREE
+from dotenv import load_dotenv
+
+load_dotenv()
 
 SERVER_ADDRESS = "127.0.0.1"
 BASE_DN = "DC=center,DC=com"
