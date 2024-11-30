@@ -1,10 +1,67 @@
-/* Загальний стиль для сторінки */
+/* Загальні стилі для сторінки */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f8f9fa;
 }
+
+/* === Сторінка авторизації === */
+
+/* Контейнер форми авторизації */
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок форми */
+.login-form h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Поля вводу */
+.login-form input {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Кнопка входу */
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #45a049;
+}
+
+/* Повідомлення про помилки */
+.login-form p {
+    color: #ff4d4d;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* === Головна сторінка === */
 
 /* Заголовок */
 h1 {
@@ -30,7 +87,6 @@ h1 {
     margin-bottom: 10px;
 }
 
-/* Виділення важливого тексту */
 .welcome-message strong {
     color: #007bff;
 }
@@ -53,7 +109,7 @@ h1 {
 
 /* Таблиця */
 table {
-    width: calc(100% - 40px); /* Відступи від країв */
+    width: calc(100% - 40px);
     margin: 20px auto;
     border-collapse: collapse;
     background: white;
@@ -81,15 +137,13 @@ tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Відключені користувачі — червоний фон */
+/* Відключений користувач */
 .disabled-user {
-    background-color: #ffcccc; /* Світло-червоний фон */
-    color: #333; /* Контрастний текст */
+    background-color: #ffcccc;
 }
 
-/* Змінюється фон при наведенні для відключених */
 .disabled-user:hover {
-    background-color: #ffb3b3; /* Темніший червоний */
+    background-color: #ffb3b3;
 }
 
 /* Кнопки в таблиці */
@@ -106,7 +160,6 @@ table button:hover {
     opacity: 0.9;
 }
 
-/* Зелена кнопка */
 table button:nth-child(1) {
     background-color: #4CAF50;
     color: white;
