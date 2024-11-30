@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Користувачі AD</title>
-    <link rel="stylesheet" href="/static/styles.css">
+    <title>Головна</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Список користувачів Buro</h1>
+    <h1>Список користувачів</h1>
+    <p>Вітаємо, {{ username }}! Ваша роль: {{ role }}</p>
+    <a href="/logout"><button>Вийти</button></a>
     <table border="1" cellpadding="5">
         <thead>
             <tr>
                 <th>Ім'я</th>
                 <th>Ім'я облікового запису</th>
                 <th>Статус</th>
-                <th>Дія</th>
+                {% if role == 'admin' %}
+                    <th>Дія</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -23,18 +27,14 @@
                     <td>{{ user.cn }}</td>
                     <td>{{ user.sam_account_name }}</td>
                     <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
-                    <td>
-                        <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
-                    </td>
-                    <td>
-                        <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
-                            {{ "Відключити" if not user.disabled else "Активувати" }}
-                        </button>
-                    </td>
+                    {% if role == 'admin' %}
+                        <td>
+                            <button>Дії</button>
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <script src="/static/scripts.js"></script>
 </body>
 </html>
