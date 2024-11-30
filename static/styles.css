@@ -109,63 +109,68 @@ h1 {
 
 /* Таблиця */
 table {
-    width: calc(100% - 40px);
-    margin: 20px auto;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: calc(100% - 40px);
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: #f2f2f2;
-    color: #333;
+  background-color: #f2f2f2;
+  color: #333;
 }
 
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
 
-tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* Відключений користувач */
+/* Відключений користувач -  HIGHER SPECIFICITY */
 .disabled-user {
-    background-color: #ffcccc;
+  background-color: #ffcccc !important; /* Use !important to override other styles */
 }
 
 .disabled-user:hover {
-    background-color: #ffb3b3;
+  background-color: #ffb3b3 !important; /* Use !important to override other styles */
 }
+
+/*  Apply even row styling ONLY to non-disabled rows */
+tr:not(.disabled-user):nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Apply hover styling ONLY to non-disabled rows */
+tr:not(.disabled-user):hover {
+  background-color: #f1f1f1;
+}
+
 
 /* Кнопки в таблиці */
 table button {
-    padding: 6px 12px;
-    font-size: 14px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 table button:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
-table button:nth-child(1) {
-    background-color: #4CAF50;
-    color: white;
+/* Use classes instead of nth-child for button styling */
+.reset-button {
+  background-color: #4CAF50;
+  color: white;
 }
 
-table button:nth-child(2) {
-    background-color: #f39c12;
-    color: white;
+.toggle-button {
+  background-color: #f39c12;
+  color: white;
 }
