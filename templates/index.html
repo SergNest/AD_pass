@@ -7,44 +7,46 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-<h1>Список користувачів</h1>
-<div class="welcome-container">
-    <p class="welcome-message">Вітаємо, <strong>{{ username }}</strong>! Ваша роль: <strong>{{ role }}</strong></p>
-    <a href="/logout">
-        <button class="red-button">Вийти</button>
-    </a>
-</div>
-<table>
-    <thead>
-    <tr>
-        <th>Ім'я</th>
-        <th>Ім'я облікового запису</th>
-        <th>Статус</th>
-        <th>Пароль</th>
-        <th>Активувати/Заблокувати</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for user in users %}
-    <tr class="{% if user.disabled %}disabled-user{% endif %}">
-        <td>{{ user.cn }}</td>
-        <td>{{ user.sam_account_name }}</td>
-        <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
-        <td>
-            <button onclick="resetPassword('{{ user.sam_account_name }}')" class="reset-button">Скинути пароль</button>
-        </td>
-        <
-        <td data-label="Toggle Status">
-            <button onclick="toggleStatus('{{ user.sam_account_name }}')"
-                    class="toggle-button {% if user.disabled %}enable-user-button{% else %}disable-user-button{% endif %}">
-                <!-- Class added here -->
-                {{ "Відключити" if not user.disabled else "Активувати" }}
-            </button>
-        </td>
-    </tr>
-    {% endfor %}
+    <h1>Список користувачів</h1>
+    <div class="welcome-container">
+        <p class="welcome-message">Вітаємо, <strong>{{ username }}</strong>! Ваша роль: <strong>{{ role }}</strong></p>
+        <a href="/logout"><button class="red-button">Вийти</button></a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Ім'я</th>
+                <th>Ім'я облікового запису</th>
+                <th>Статус</th>
+                <th>Пароль</th>
+                <th>Активувати/Заблокувати</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr class="{% if user.disabled %}disabled-user{% endif %}">
+                <td>{{ user.cn }}</td>
+                <td>{{ user.sam_account_name }}</td>
+                <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
+                <td>
+                    <button onclick="resetPassword('{{ user.sam_account_name }}')" class="reset-button">Скинути пароль</button>
+                </td>
+<!--                <td>-->
+<!--                    <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')" class="toggle-button">-->
+<!--                        {{ "Відключити" if not user.disabled else "Активувати" }}-->
+<!--                    </button>-->
+<!--                </td>-->
+
+                <td data-label="Toggle Status">
+                    <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')"
+                            class="toggle-button {% if user.disabled %}enable-user-button{% else %}disable-user-button{% endif %}">
+                        {{ "Відключити" if not user.disabled else "Активувати" }}
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
-</table>
-<script src="/static/scripts.js"></script>
+    </table>
+    <script src="/static/scripts.js"></script>
 </body>
 </html>
