@@ -27,11 +27,14 @@
                     <td>{{ user.cn }}</td>
                     <td>{{ user.sam_account_name }}</td>
                     <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
-                    {% if role == 'admin' %}
-                        <td>
-                            <button>Дії</button>
-                        </td>
-                    {% endif %}
+                    <td>
+                        <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
+                    </td>
+                    <td>
+                        <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
+                            {{ "Відключити" if not user.disabled else "Активувати" }}
+                        </button>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
