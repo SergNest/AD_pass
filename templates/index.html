@@ -8,9 +8,11 @@
 </head>
 <body>
     <h1>Список користувачів</h1>
-    <p>Вітаємо, {{ username }}! Ваша роль: {{ role }}</p>
-    <a href="/logout"><button>Вийти</button></a>
-    <table border="1" cellpadding="5">
+    <div class="welcome-container">
+        <p class="welcome-message">Вітаємо, <strong>{{ username }}</strong>! Ваша роль: <strong>{{ role }}</strong></p>
+        <a href="/logout"><button class="red-button">Вийти</button></a>
+    </div>
+    <table>
         <thead>
             <tr>
                 <th>Ім'я</th>

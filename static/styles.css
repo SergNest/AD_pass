@@ -1,3 +1,4 @@
+/* Загальний стиль для сторінки */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -5,68 +6,107 @@ body {
     background-color: #f8f9fa;
 }
 
-.login-form {
-    width: 300px;
-    margin: 100px auto;
+/* Заголовок */
+h1 {
+    font-size: 28px;
+    color: #333;
+    text-align: left;
+    margin: 20px;
+}
+
+/* Контейнер привітання */
+.welcome-container {
+    margin: 20px;
     padding: 20px;
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
+/* Текст привітання */
+.welcome-message {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
 }
 
+/* Виділення важливого тексту */
+.welcome-message strong {
+    color: #007bff;
+}
+
+/* Червона кнопка */
+.red-button {
+    background-color: #ff4d4d;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.red-button:hover {
+    background-color: #d43c3c;
+}
+
+/* Таблиця */
 table {
-    width: 100%;
+    width: calc(100% - 40px); /* Відступи від країв */
+    margin: 20px auto;
     border-collapse: collapse;
-    margin: 0 auto;
-    border: 1px solid #ccc;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
+    padding: 12px 15px;
     text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
 th {
     background-color: #f2f2f2;
-    font-weight: bold;
+    color: #333;
 }
 
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Відключений користувач */
 .disabled-user {
     background-color: #ffcccc;
 }
 
-button {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 8px 16px;
+/* Кнопки в таблиці */
+table button {
+    padding: 6px 12px;
     font-size: 14px;
-    margin: 4px 2px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #3e8e41;
+table button:hover {
+    opacity: 0.9;
 }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: default;
+/* Зелена кнопка */
+table button:nth-child(1) {
+    background-color: #4CAF50;
+    color: white;
 }
 
-@media (max-width: 768px) {
-    table {
-        font-size: 12px;
-    }
-
-    th, td {
-        padding: 8px;
-    }
+table button:nth-child(2) {
+    background-color: #f39c12;
+    color: white;
 }
