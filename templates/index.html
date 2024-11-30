@@ -29,10 +29,10 @@
                 <td>{{ user.sam_account_name }}</td>
                 <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
                 <td>
-                    <button class="reset-button" onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
+                    <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
                 </td>
                 <td>
-                    <button class="toggle-button" onclick="toggleStatus('{{ user.sam_account_name }}')">
+                    <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
                         {{ "Відключити" if not user.disabled else "Активувати" }}
                     </button>
                 </td>
