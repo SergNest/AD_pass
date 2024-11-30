@@ -23,22 +23,22 @@
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
-                <tr class="{{ 'disabled-user' if user.disabled else '' }}">
-                    <td>{{ user.cn }}</td>
-                    <td>{{ user.sam_account_name }}</td>
-                    <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
-                    <td>
-                        <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
-                    </td>
-                    <td>
-                        <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
-                            {{ "Відключити" if not user.disabled else "Активувати" }}
-                        </button>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
+        {% for user in users %}
+            <tr class="{% if user.disabled %}disabled-user{% endif %}">
+                <td>{{ user.cn }}</td>
+                <td>{{ user.sam_account_name }}</td>
+                <td>{{ "Відключений" if user.disabled else "Активний" }}</td>
+                <td>
+                    <button onclick="resetPassword('{{ user.sam_account_name }}')">Скинути пароль</button>
+                </td>
+                <td>
+                    <button onclick="toggleStatus('{{ user.sam_account_name }}', '{{ 'disable' if not user.disabled else 'enable' }}')">
+                        {{ "Відключити" if not user.disabled else "Активувати" }}
+                    </button>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
     </table>
     <script src="/static/scripts.js"></script>
 </body>

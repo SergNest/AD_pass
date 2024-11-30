@@ -81,9 +81,15 @@ tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Відключений користувач */
+/* Відключені користувачі — червоний фон */
 .disabled-user {
-    background-color: #ffcccc;
+    background-color: #ffcccc; /* Світло-червоний фон */
+    color: #333; /* Контрастний текст */
+}
+
+/* Змінюється фон при наведенні для відключених */
+.disabled-user:hover {
+    background-color: #ffb3b3; /* Темніший червоний */
 }
 
 /* Кнопки в таблиці */
