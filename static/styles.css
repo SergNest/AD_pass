@@ -171,6 +171,24 @@ table button:hover {
 }
 
 .toggle-button {
-  background-color: #f39c12;
-  color: white;
+  /* Default button styles */
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: white; /* Ensure text is visible */
+}
+
+.disable-user-button {  /* Style for the "Disable User" button */
+  background-color: #f39c12; /* Orange */
+}
+
+.enable-user-button { /* Style for the "Enable User" button */
+  background-color: #27ae60; /* Green */
+}
+
+.toggle-button:hover {
+  opacity: 0.9;
 }
