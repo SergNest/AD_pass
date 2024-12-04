@@ -4,8 +4,9 @@ from services.ldap_service import get_users_for_role
 main_bp = Blueprint('main', __name__)
 
 USERS = {
-    "admin": {"password": "Addmin123", "role": "admin", "ou": "all"},
-    "buro": {"password": "buro123", "role": "user", "ou": "OU=buro,DC=center,DC=com"},
+    "admin": {"password": "admin123", "role": "admin", "ou": "all"},
+    "buro": {"password": "buro0312", "role": "user", "ou": "OU=buro,DC=center,DC=com"},
+
 }
 
 
