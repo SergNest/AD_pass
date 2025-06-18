@@ -1,37 +1,45 @@
-
 param (
     [string]$SamAccountName,
     [string]$NewPassword
 )
 
-# Перевіряємо, чи вказаний SamAccountName
+# Перевірка параметрів
 if (-not $SamAccountName) {
-    Write-Output "Error: Not enter SamAccountName"
+    Write-Error "Error: Parameter 'SamAccountName' is required"
+    exit 1
+}
+if (-not $NewPassword) {
+    Write-Error "Error: Parameter 'NewPassword' is required"
     exit 1
 }
 
 try {
-    # Імпорт модуля Active Directory (вимагає встановлений RSAT)
-    Import-Module ActiveDirectory
+    Import-Module ActiveDirectory -ErrorAction Stop
 
-    # Отримання користувача за логіном
-    $User = Get-ADUser -Filter "SamAccountName -eq '$SamAccountName'" -Properties DistinguishedName
+    # Отримання користувача
+    $User = Get-ADUser -Filter { SamAccountName -eq $SamAccountName } -Properties DistinguishedName, PasswordNeverExpires
 
     if (-not $User) {
-        Write-Output "Error: User not found"
+        Write-Error "Error: User '$SamAccountName' not found"
         exit 1
     }
 
+    # Якщо пароль не закінчується — знімаємо прапор
+    if ($User.PasswordNeverExpires) {
+        Set-ADUser -Identity $User.DistinguishedName -PasswordNeverExpires $false -ErrorAction Stop
+        Write-Output "Info: 'PasswordNeverExpires' unset for $SamAccountName"
+    }
+
     # Зміна пароля
-    Set-ADAccountPassword -Identity $User.DistinguishedName -Reset -NewPassword (ConvertTo-SecureString $NewPassword -AsPlainText -Force)
+    Set-ADAccountPassword -Identity $User.DistinguishedName -Reset -NewPassword (ConvertTo-SecureString $NewPassword -AsPlainText -Force) -ErrorAction Stop
 
-    # Встановлення прапора "Користувач повинен змінити пароль при наступному вході"
-    Set-ADUser -Identity $User.DistinguishedName -ChangePasswordAtLogon $true
+    # Вимога змінити пароль при наступному вході
+    Set-ADUser -Identity $User.DistinguishedName -ChangePasswordAtLogon $true -ErrorAction Stop
 
-    Write-Output "Success: Password for $SamAccountName changed on $NewPassword. The user will be required to change their password at the next logon."
+    Write-Output "Success: Password for '$SamAccountName' changed to '$NewPassword'. The user will be required to change it at next logon."
     exit 0
 
 } catch {
-    Write-Output "Error: $_"
+    Write-Error "Unhandled error: $($_.Exception.Message)"
     exit 1
 }
