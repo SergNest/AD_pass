@@ -6,6 +6,7 @@ main_bp = Blueprint('main', __name__)
 USERS = {
     "admin": {"password": "admin123", "role": "admin", "ou": "all"},
     "buro": {"password": "buro0312", "role": "user", "ou": "OU=buro,DC=center,DC=com"},
+    "polimer": {"password": "polimer0312", "role": "user", "ou": "OU=Polimer,DC=center,DC=com"},
 
 }
 
